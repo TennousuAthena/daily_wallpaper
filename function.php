@@ -53,16 +53,16 @@ function getImageFromURL($url, $local_address='./image/'){
 
 /**
  * 下载bing每日图片
- * @param $download_dir 保存路径
+ * @param $download_dir
  * @return bool
  */
 function bingWallpaper($download_dir='image/bing/'){
     $result = true;
     if(!file_exists($download_dir)) {
         mkdir($download_dir, '0777', true);
-        for($i=1;$i<=7;$i++){
-            if(!getImageFromURL(getBingPictureURL($i),$download_dir)) $result = false;
-        }
+    }
+    for($i=1;$i<=7;$i++){
+        if(!getImageFromURL(getBingPictureURL($i),$download_dir)) $result = false;
     }
     return $result;
 }
@@ -74,9 +74,9 @@ function bingWallpaper($download_dir='image/bing/'){
 function getImagesFromLocal ($type = 'all')
 {
     if ($handle = opendir('./image/bing/')) {
-        echo "Files:\n";
+        echo "Files:\n<br /> ";
         while (false !== ($file = readdir($handle))) {
-            echo "/" . "$file\n<br />";
+            echo "/".$file."\n <br />";
         }
         closedir($handle);
     }
