@@ -5,7 +5,7 @@
  *| | | | |     | | |  _|| |   | |_| |
  *| |_| | |___  | | | |__| |___|  _  |
  * \__\_\\____| |_| |_____\____|_| |_|
- * qcimg - index.php
+ * wallpaper - index.php
  * Copyright (c) 2015 - 2018.,QCTech ,All rights reserved.
  * Created by: QCTech
  * Created Time: 2018-11-04 - 22:11
