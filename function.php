@@ -34,7 +34,7 @@ function getImageFromURL($url, $local_address='./image/'){
         return false;
     }
     $ext_name = strrchr($url, '.'); //获取图片的扩展名
-    if($ext_name != '.gif' && $ext_name != '.jpg' && $ext_name != '.bmp' && $ext_name != '.png') {
+    if($ext_name != '.jpg' && $ext_name != '.bmp' && $ext_name != '.png') {
         return false; //格式不在允许的范围
     }
     $filename = $local_address.md5($url).'.jpg';
