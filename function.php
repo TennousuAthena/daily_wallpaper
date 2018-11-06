@@ -17,8 +17,16 @@
  * @return string
  */
 function getBingPictureURL($number=1){
+    $temp_file = './data/'.date('Y').'-'.date('m').'-'.date('d').'.tmp';
+    if(file_exists($temp_file)){
+        return false;
+    }else{
+        $temp_file = fopen ($temp_file, 'w' );
+        fclose($temp_file);
+    }
     $str = file_get_contents('https://cn.bing.com/HPImageArchive.aspx?idx='.$number.'&n=1');
     if(preg_match("/<urlBase>(.+?)<\/urlBase>/ies",$str,$matches)){
+
         return $imgurl='http://cn.bing.com'.$matches[1].'_1920x1080.jpg';
     }else{
         return false;
