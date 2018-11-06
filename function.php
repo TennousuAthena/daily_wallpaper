@@ -20,6 +20,8 @@ function getBingPictureURL($number=1){
     $str = file_get_contents('https://cn.bing.com/HPImageArchive.aspx?idx='.$number.'&n=1');
     if(preg_match("/<urlBase>(.+?)<\/urlBase>/ies",$str,$matches)){
         return $imgurl='http://cn.bing.com'.$matches[1].'_1920x1080.jpg';
+    }else{
+        return false;
     }
 }
 
@@ -30,7 +32,7 @@ function getBingPictureURL($number=1){
  * @return string
  */
 function getImageFromURL($url, $local_address='./image/'){
-    if($url == '') {
+    if($url == '' & $url === false) {
         return false;
     }
     $ext_name = strrchr($url, '.'); //获取图片的扩展名
@@ -39,7 +41,7 @@ function getImageFromURL($url, $local_address='./image/'){
     }
     $filename = $local_address.md5($url).'.jpg';
     if(file_exists($filename)){
-        return false;
+        return 1;
     }
     ob_start();
     readfile($url);
@@ -70,14 +72,23 @@ function bingWallpaper($download_dir='image/bing/'){
 /**
  * 获取本地壁纸
  * @param string $type
+ * @return array
  */
-function getImagesFromLocal ($type = 'all')
+function getImagesFromLocal ($type = 'bing')
 {
-    if ($handle = opendir('./image/bing/')) {
-        echo "Files:\n<br /> ";
-        while (false !== ($file = readdir($handle))) {
-            echo "/".$file."\n <br />";
-        }
-        closedir($handle);
+    if($type == '') return ['error'];
+    switch ($type){
+        case 'bing':
+            $image_path = './image/bing/';
+            break;
+        default:
+            $image_path = './image/'.$type.'/';
+            break;
+    }
+    if ($handle = opendir($image_path)) {
+        $file_array = scandir($image_path);
+        return $file_array;
+    }else{
+        return ['error'];
     }
 }
