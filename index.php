@@ -12,6 +12,6 @@
  */
 include_once ('function.php');
 //获取BING每日图片
-var_dump(bingWallpaper());
+bingWallpaper();
 
 var_dump(getImagesFromLocal('bing'));
