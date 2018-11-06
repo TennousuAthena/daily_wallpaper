@@ -4,7 +4,7 @@
 开袋即食
 \<img src='index.php'>
 
-![每日壁纸](https://blog.qmcmc.cn/html/daily_wallpaper/)
+![每日壁纸](https://github.com/qcminecraft/daily_wallpaper/blob/master/image/bing/cf892272f85eb9f3c0cf5659d2ba1206.jpg)
 
 即将完成：
 - 更多壁纸来源
