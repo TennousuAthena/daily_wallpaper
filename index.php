@@ -10,8 +10,12 @@
  * Created by: QCTech
  * Created Time: 2018-11-04 - 22:11
  */
+$TYPE = 'bing';
 include_once ('function.php');
 //获取BING每日图片
 bingWallpaper();
 
-var_dump(getImagesFromLocal('bing'));
+$result = getImagesFromLocal($TYPE);
+if($result != ['error']){
+    header('Location:./image/'.$TYPE.'/'.$result[array_rand($result,1)]);
+}
