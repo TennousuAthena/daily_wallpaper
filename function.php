@@ -17,13 +17,6 @@
  * @return string
  */
 function getBingPictureURL($number=1){
-    $temp_file = './data/'.date('Y').'-'.date('m').'-'.date('d').'.tmp';
-    if(file_exists($temp_file)){
-        return false;
-    }else{
-        $temp_file = fopen ($temp_file, 'w' );
-        fclose($temp_file);
-    }
     $str = file_get_contents('https://cn.bing.com/HPImageArchive.aspx?idx='.$number.'&n=1');
     if(preg_match("/<urlBase>(.+?)<\/urlBase>/ies",$str,$matches)){
 
@@ -51,13 +44,19 @@ function getImageFromURL($url, $local_address='./image/'){
     if(file_exists($filename)){
         return 1;
     }
-    ob_start();
-    readfile($url);
-    $img_data = ob_get_contents();
-    ob_end_clean();
-    $local_file = fopen($filename, 'a');
-    fwrite($local_file, $img_data);
-    fclose($local_file);
+//    ob_start();
+//    readfile($url);
+//    $img_data = ob_get_contents();
+//    ob_end_clean();
+//    $local_file = fopen($filename, 'a');
+//    fwrite($local_file, $img_data);
+//    fclose($local_file);
+//    return $filename;
+    $file_output = fopen($filename, 'w');
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_FILE, $file_output);
+    curl_exec($ch);
+    curl_close($ch);
     return $filename;
 }
 
@@ -67,14 +66,22 @@ function getImageFromURL($url, $local_address='./image/'){
  * @return bool
  */
 function bingWallpaper($download_dir='image/bing/'){
-    $result = true;
-    if(!file_exists($download_dir)) {
-        mkdir($download_dir, '0777', true);
+    if(!file_exists('./data/')) mkdir('./data', 0777, true);
+    $temp_file = './data/'.date('Y').'-'.date('m').'-'.date('d').'.tmp';
+    if(file_exists($temp_file)){
+        return false;
+    }else{
+        $result = true;
+        if(!file_exists($download_dir)) {
+            mkdir($download_dir, '0777', true);
+        }
+        for($i=1;$i<=7;$i++){
+            if(!getImageFromURL(getBingPictureURL($i),$download_dir)) $result = false;
+        }
+        $temp_file = fopen ($temp_file, 'w' );
+        fclose($temp_file);
+        return $result;
     }
-    for($i=1;$i<=7;$i++){
-        if(!getImageFromURL(getBingPictureURL($i),$download_dir)) $result = false;
-    }
-    return $result;
 }
 
 /**
