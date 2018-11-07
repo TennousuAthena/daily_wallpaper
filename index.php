@@ -18,6 +18,6 @@ bingWallpaper();
 $result = getImagesFromLocal($TYPE);
 if($result != ['error']){
     $rand = array_rand($result,1);
-    //header('Location:./image/'.$TYPE.'/'.$result[array_rand($result,1)]);
+    header('Location:./image/'.$TYPE.'/'.$result[array_rand($result,1)]);
     print_r($result);
 }
