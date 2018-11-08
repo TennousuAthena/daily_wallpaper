@@ -44,14 +44,6 @@ function getImageFromURL($url, $local_address='./image/'){
     if(file_exists($filename)){
         return 1;
     }
-//    ob_start();
-//    readfile($url);
-//    $img_data = ob_get_contents();
-//    ob_end_clean();
-//    $local_file = fopen($filename, 'a');
-//    fwrite($local_file, $img_data);
-//    fclose($local_file);
-//    return $filename;
     $file_output = fopen($filename, 'w');
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_FILE, $file_output);
@@ -102,6 +94,10 @@ function getImagesFromLocal ($type = 'bing')
     }
     if ($handle = opendir($image_path)) {
         $file_array = scandir($image_path);
+        array_splice($file_array,0,1);
+        for($i=0;$i<count($file_array);$i++){
+            if(strrchr($file_array[$i], '.')!='.jpg' && strrchr($file_array[$i], '.')!='.png') array_splice($file_array,$i,1);
+        }
         return $file_array;
     }else{
         return ['error'];
