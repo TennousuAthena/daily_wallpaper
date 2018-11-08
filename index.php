@@ -11,11 +11,11 @@
  * Created Time: 2018-11-04 - 22:11
  */
 $TYPE = 'bing';
-include_once ('function.php');
-//获取BING每日图片
-bingWallpaper();
+include_once('wallpaper.class.php');
+$wallpaper = new Wallpaper();
 
-$result = getImagesFromLocal($TYPE);
+$wallpaper->bingWallpaper();
+$result = $wallpaper->getImagesFromLocal($TYPE);
 if($result != ['error']){
     $rand = array_rand($result,1);
     header('Location:./image/'.$TYPE.'/'.$result[array_rand($result,1)]);
