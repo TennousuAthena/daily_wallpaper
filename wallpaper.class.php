@@ -10,8 +10,11 @@
  * Created by: QCTech
  * Created Time: 2018-11-04 - 20:58
  */
+define("TEMPFILE", "./data/".date('Y')."-".date('m')."-".date('d').".tmp");
 class Wallpaper
 {
+    public $tempFile = TEMPFILE;
+
     /**
      * 获取bing每日图片
      * @param int $number 图片编号(1-7)
@@ -63,7 +66,7 @@ class Wallpaper
     public function bingWallpaper($download_dir = 'image/bing/')
     {
         if (!file_exists('./data/')) mkdir('./data', 0777, true);
-        $temp_file = './data/' . date('Y') . '-' . date('m') . '-' . date('d') . '.tmp';
+        $temp_file = $this->tempFile;
         if (file_exists($temp_file)) {
             return false;
         } else {
@@ -75,6 +78,7 @@ class Wallpaper
                 if (!$this->getImageFromURL($this->getBingPictureURL($i), $download_dir)) $result = false;
             }
             $temp_file = fopen($temp_file, 'w');
+            fwrite($temp_file, $this->getImagesFromLocal('bing')[array_rand($this->getImagesFromLocal('bing'),1)]);
             fclose($temp_file);
             return $result;
         }
@@ -85,9 +89,10 @@ class Wallpaper
      * @param string $type
      * @return array
      */
-    public function getImagesFromLocal($type = 'bing')
+    private function getImagesFromLocal($type = 'bing')
     {
         if ($type == '') return ['error'];
+
         switch ($type) {
             case 'bing':
                 $image_path = './image/bing/';
@@ -96,6 +101,7 @@ class Wallpaper
                 $image_path = './image/' . $type . '/';
                 break;
         }
+
         if ($handle = opendir($image_path)) {
             $file_array = scandir($image_path);
             array_splice($file_array, 0, 1);
@@ -106,5 +112,20 @@ class Wallpaper
         } else {
             return ['error'];
         }
+    }
+
+    /**
+     * 读取临时文件中的数据
+     * @return bool|string
+     */
+    public function bingImageResult(){
+        $temp_file = $this->tempFile;
+        if(!file_exists($temp_file)){
+            $this->getImagesFromLocal('bing');
+        }
+        $temp_file = fopen($temp_file, "r");
+        $result = fgets($temp_file);
+        fclose($temp_file);
+        return $result;
     }
 }
