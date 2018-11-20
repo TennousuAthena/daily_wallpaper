@@ -10,15 +10,11 @@
  * Created by: QCTech
  * Created Time: 2018-11-04 - 22:11
  */
-$TYPE = 'bing';
 include_once('wallpaper.class.php');
 $wallpaper = new Wallpaper();
 
 $wallpaper->bingWallpaper();
-$result = $wallpaper->getImagesFromLocal($TYPE);
+$result = $wallpaper->bingImageResult();
 if($result != ['error']){
-    $rand = array_rand($result,1);
-    header("HTTP/1.1 301 Moved Permanently"); 
-    header('Location:./image/'.$TYPE.'/'.$result[array_rand($result,1)]);
-    print_r($result);
+    header('Location:./image/bing/'.$result);
 }
