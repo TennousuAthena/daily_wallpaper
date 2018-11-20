@@ -125,6 +125,9 @@ class Wallpaper
         }
         $temp_file = fopen($temp_file, "r");
         $result = fgets($temp_file);
+        if($result=='' && $result = ' '){
+            return $this->getImagesFromLocal('bing')[array_rand($this->getImagesFromLocal('bing'),1)];
+        }
         fclose($temp_file);
         return $result;
     }
